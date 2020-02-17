@@ -1,6 +1,6 @@
 Gem::Specification.new do |gem|
   gem.name        = 'no-regrets'
-  gem.version     = '0.0.0'
+  gem.version     = '0.0.1'
   gem.licenses    = ['MIT']
   gem.summary     = "Visual regression testing for Capybara specs"
   gem.description = ""
