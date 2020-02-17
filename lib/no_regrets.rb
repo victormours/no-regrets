@@ -1,3 +1,4 @@
+require 'fileutils'
 require 'digest'
 require 'launchy'
 require_relative "no_regrets/image_diff"
@@ -28,7 +29,8 @@ class NoRegrets
       puts "Saving a new screenshot fingerprint for \"#{screenshot_name}\" in #{fingerprint_file_path}"
     end
     fingerprints[screenshot_name] = sha1
-    File.write(fingerprint_file_path, fingerprints.to_yaml)
+
+    write_fingerprints_file(fingerprints)
   end
 
   def initialize(screenshot_name)
@@ -40,7 +42,7 @@ class NoRegrets
   attr_reader :screenshot_name
 
   def fingerprints
-    @fingerprints ||= File.exists?(fingerprint_file_path) ? YAML.load(File.read(fingerprint_file_path)) : {}
+    @fingerprints ||= (File.exists?(fingerprint_file_path) && YAML.load(File.read(fingerprint_file_path))) || {}
   end
 
   def raise_error(new_screenshot_path, new_sha1)
@@ -71,6 +73,14 @@ class NoRegrets
 
   def old_sha1
     fingerprints[screenshot_name]
+  end
+
+  def write_fingerprints_file(fingerprints)
+    dirname = File.dirname(fingerprint_file_path)
+    unless File.directory?(dirname)
+      FileUtils.mkdir_p(dirname)
+    end
+    File.write(fingerprint_file_path, fingerprints.to_yaml)
   end
 
   def fingerprint_file_path
