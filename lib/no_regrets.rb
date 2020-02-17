@@ -42,7 +42,7 @@ class NoRegrets
   attr_reader :screenshot_name
 
   def fingerprints
-    @fingerprints ||= File.exists?(fingerprint_file_path) ? YAML.load(File.read(fingerprint_file_path)) : {}
+    @fingerprints ||= (File.exists?(fingerprint_file_path) && YAML.load(File.read(fingerprint_file_path))) || {}
   end
 
   def raise_error(new_screenshot_path, new_sha1)
