@@ -72,7 +72,7 @@ class NoRegrets
   end
 
   def old_sha1
-    fingerprints.fetch(screenshot_name)
+    fingerprints[screenshot_name]
   end
 
   def write_fingerprints_file(fingerprints)
